@@ -1,6 +1,6 @@
-#Di Tirion (Master)
 #!/bin/bash
 
+#Di Tirion (Master)
 cat > /etc/bind/k12/k12.com << 'EOF'
 $TTL    604800          ; Waktu cache default (detik)
 @       IN      SOA     k12.com. root.k12.com. (

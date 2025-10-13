@@ -775,3 +775,33 @@ Dokumentasi menunjukkan web server dinamis dengan PHP-FPM berhasil diakses dan U
 
 ---
 
+## Soal 11
+
+
+## Soal 12
+
+
+## Soal 13
+
+
+## Soal 14
+
+
+## Soal 15
+
+
+## Soal 16
+
+
+## Soal 17
+
+
+## Soal 18
+
+
+## Soal 19
+
+
+## Soal 20
+
+
