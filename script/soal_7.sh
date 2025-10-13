@@ -4,7 +4,7 @@
 cat > /etc/bind/k12/k12.com << 'EOF'
 $TTL    604800          ; Waktu cache default (detik)
 @       IN      SOA     k12.com. root.k12.com. (
-                        2025100412 ; Serial (format YYYYMMDDXX)
+                        2025100413 ; Serial (format YYYYMMDDXX)
                         604800     ; Refresh (1 minggu)
                         86400      ; Retry (1 hari)
                         2419200    ; Expire (4 minggu)
