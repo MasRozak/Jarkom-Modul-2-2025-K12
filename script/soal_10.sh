@@ -68,4 +68,4 @@ service nginx restart
 apt-get update
 apt-get install -y lynx
 lynx app.k12.com/about
-lynx app.k12.com
+lynx app.k12.com 
