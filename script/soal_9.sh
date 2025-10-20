@@ -2,7 +2,7 @@
 
 #Di Lindon (Static Web)
 
-apt-get update
+apt update
 apt install nginx -y
 
 mkdir -p /var/www/static.k12.com
@@ -34,6 +34,6 @@ ln -s /etc/nginx/sites-available/static.k12.com /etc/nginx/sites-enabled/
 service nginx restart
 
 #Di Client 
-apt-get update
-apt-get install -y lynx
+apt update
+apt install -y lynx
 lynx static.k12.com

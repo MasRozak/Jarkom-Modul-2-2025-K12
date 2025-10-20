@@ -1,7 +1,7 @@
 #!/bin/bash
 
-apt-get update 
-apt-get install -y journalctl
+apt update 
+apt install -y journalctl
 
 #Di valmar (Slave)
 dig @192.217.2.3 k12.com SOA

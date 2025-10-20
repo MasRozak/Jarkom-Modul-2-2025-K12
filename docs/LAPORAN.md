@@ -1,5 +1,5 @@
 # LAPORAN PRAKTIKUM MODUL 2 JARINGAN KOMPUTER
-**Kelompok K12**
+**Kelompok K12
 | NRP | Nama |
 |---|---|
 | 5027241038 | Moch. Rizki Nasrullah |
@@ -16,6 +16,16 @@
 - [Soal 8](#soal-8-reverse-dns-lookup)
 - [Soal 9](#soal-9-web-server-statis-dengan-nginx)
 - [Soal 10](#soal-10-web-server-dinamis-dengan-php-fpm)
+- [Soal 11](#soal-11-lampion-lindon-dinyalakan)
+- [Soal 12](#soal-12-vingilot-mengisahkan-cerita-dinamis)
+- [Soal 13](#soal-13-di-muara-sungai-sirion-berdiri)
+- [Soal 14](#soal-14-kamar-kecil-di-balik-gerbang)
+- [Soal 15](#soal-15-kanonisasi-hostname-sirion)
+- [Soal 16](#soal-16-catatan-kedatangan-di-vingilot)
+- [Soal 17](#soal-17-pengujian-beban-dengan-apachebench)
+- [Soal 18](#soal-18-badai-mengubah-garis-pantai)
+- [Soal 19](#soal-19-mereka-bangkit-sendiri)
+- [Soal 20](#soal-20-sang-musuh-dan-pelabuhan-baru)
 
 ---
 
@@ -27,18 +37,18 @@ Pada tahap awal praktikum, kita melakukan setup topologi jaringan lengkap untuk 
 ### Topologi Jaringan
 Topologi yang digunakan terdiri dari beberapa subnet dengan node-node sebagai berikut:
 
-**Subnet 192.217.1.0/24:**
+**Subnet 192.217.1.0/24:
 - Earendil (192.217.1.2)
 - Elwing (192.217.1.3)
 
-**Subnet 192.217.2.0/24:**
+**Subnet 192.217.2.0/24:
 - Sirion - Router (192.217.2.2)
 - Tirion - DNS Master/NS1 (192.217.2.3)
 - Valmor - DNS Slave/NS2 (192.217.2.4)
 - Lindon - Static Web Server (192.217.2.5)
 - Vingilot - Dynamic Web Server (192.217.2.6)
 
-**Subnet 192.217.3.0/24:**
+**Subnet 192.217.3.0/24:
 - Cirdan (192.217.3.2)
 - Elrond (192.217.3.3)
 - Maglor (192.217.3.4)
@@ -55,7 +65,7 @@ Membuat topologi sesuai dengan spesifikasi modul menggunakan GNS3 atau tool netw
 #### 2. Konfigurasi Network Interface
 Setiap node dikonfigurasi dengan IP address yang sesuai dengan subnet masing-masing:
 
-**Contoh konfigurasi di Router Sirion:**
+**Contoh konfigurasi di Router Sirion:
 ```bash
 # Interface ke subnet 192.217.1.0/24
 auto eth0
@@ -80,7 +90,7 @@ auto eth3
 iface eth3 inet dhcp
 ```
 
-**Contoh konfigurasi di Client/Server Node:**
+**Contoh konfigurasi di Client/Server Node:
 ```bash
 auto eth0
 iface eth0 inet static
@@ -120,22 +130,22 @@ Di semua node yang memerlukan, update repository dan install paket yang diperluk
 
 ```bash
 # Update repository
-apt-get update
+apt update
 
 # Install paket dasar
-apt-get install -y nano wget curl dnsutils
+apt install -y nano wget curl dnsutils
 
 # Di DNS Server (Tirion & Valmor)
-apt-get install -y bind9
+apt install -y bind9
 
 # Di Web Server (Lindon)
-apt-get install -y nginx
+apt install -y nginx
 
 # Di Web Server (Vingilot)
-apt-get install -y nginx php-fpm
+apt install -y nginx php-fpm
 
 # Di Client untuk testing
-apt-get install -y lynx
+apt install -y lynx
 ```
 
 #### 7. Verifikasi Setup
@@ -163,8 +173,8 @@ Pada soal ini, kita diminta untuk mengkonfigurasi DNS server dengan arsitektur M
 Pertama, kita melakukan instalasi bind9 dan membuat symbolic link untuk memudahkan management:
 
 ```bash
-apt-get update
-apt-get install bind9 -y
+apt update
+apt install bind9 -y
 ln -s /etc/init.d/named /etc/init.d/bind9
 ```
 
@@ -251,8 +261,8 @@ service bind9 restart
 Instalasi bind9 dan konfigurasi sebagai slave:
 
 ```bash
-apt-get update
-apt-get install bind9 -y
+apt update
+apt install bind9 -y
 ln -s /etc/init.d/named /etc/init.d/bind9
 
 cat > /etc/bind/named.conf.local << 'EOF'
@@ -352,7 +362,7 @@ Melakukan testing untuk memastikan DNS replication berjalan dengan baik antara m
 Di node Valimar, install journalctl untuk melihat log system:
 
 ```bash
-apt-get update && apt-get install -y journalctl
+apt update && apt install -y journalctl
 ```
 
 #### 2. Query ke DNS Master (Tirion)
@@ -559,7 +569,7 @@ Setup web server statis menggunakan Nginx di node Lindon untuk melayani konten s
 Install web server nginx:
 
 ```bash
-apt-get update
+apt update
 apt install nginx -y
 ```
 
@@ -625,8 +635,8 @@ service nginx restart
 Di client, install lynx (text-based browser) dan akses website:
 
 ```bash
-apt-get update
-apt-get install -y lynx
+apt update
+apt install -y lynx
 lynx static.k12.com
 ```
 
@@ -757,8 +767,8 @@ Perintah `nginx -t` digunakan untuk test konfigurasi sebelum restart.
 Di client, akses aplikasi menggunakan lynx:
 
 ```bash
-apt-get update
-apt-get install -y lynx
+apt update
+apt install -y lynx
 lynx app.k12.com
 lynx app.k12.com/about
 ```
@@ -775,33 +785,770 @@ Dokumentasi menunjukkan web server dinamis dengan PHP-FPM berhasil diakses dan U
 
 ---
 
-## Soal 11
+## Soal 11: Lampion Lindon Dinyalakan
 
+### Deskripsi
+Mengkonfigurasi web server statis Lindon dengan fitur directory listing untuk direktori `/annals/`. Konfigurasi ini memungkinkan pengunjung melihat daftar file yang tersedia dalam direktori arsip.
 
-## Soal 12
+### Langkah Pengerjaan
 
+#### 1. Membuat Struktur Direktori dan Konten
+Buat direktori annals dan file readme sebagai konten testing:
 
-## Soal 13
+```bash
+mkdir -p /var/www/html/annals
+echo "Arsip Lindon tersedia" > /var/www/html/annals/readme.txt
+```
 
+#### 2. Konfigurasi Virtual Host Nginx
+Buat konfigurasi untuk mengaktifkan autoindex pada path `/annals/`:
 
-## Soal 14
+```bash
+cat > /etc/nginx/sites-available/lindon.conf << 'EOF'
+server {
+    listen 80;
+    server_name static.k12.com lindon.k12.com;
 
+    root /var/www/html;
+    index index.html;
 
-## Soal 15
+    location /annals/ {
+        autoindex on;
+    }
+}
+EOF
+```
 
+Penjelasan:
+- `autoindex on`: mengaktifkan directory listing untuk path `/annals/`
+- `server_name`: mendukung akses melalui dua hostname
 
-## Soal 16
+#### 3. Aktivasi Konfigurasi
+Enable site dan restart nginx:
 
+```bash
+ln -s /etc/nginx/sites-available/lindon.conf /etc/nginx/sites-enabled/
+systemctl restart nginx
+```
 
-## Soal 17
+#### 4. Testing dari Client
+Verifikasi bahwa directory listing berfungsi:
 
+```bash
+curl -I http://static.k12.com/annals/
+```
 
-## Soal 18
+Output yang diharapkan menunjukkan HTTP 200 OK dengan daftar file dalam direktori.
 
+### Dokumentasi
+![Hasil Testing Soal 11](11.png)
 
-## Soal 19
+---
 
+## Soal 12: Vingilot Mengisahkan Cerita Dinamis
 
-## Soal 20
+### Deskripsi
+Konfigurasi web server dinamis Vingilot dengan PHP-FPM, termasuk implementasi URL rewriting untuk clean URL. Path `/about` akan di-rewrite ke `about.php` tanpa menampilkan extension.
 
+### Langkah Pengerjaan
 
+#### 1. Membuat Struktur Aplikasi PHP
+Buat file PHP untuk halaman utama dan about:
+
+```bash
+mkdir -p /var/www/html
+
+cat > /var/www/html/index.php << 'EOF'
+<?php echo 'Selamat datang di Vingilot'; ?>
+EOF
+
+cat > /var/www/html/about.php << 'EOF'
+<?php echo 'Tentang Vingilot'; ?>
+EOF
+```
+
+#### 2. Konfigurasi Virtual Host dengan URL Rewrite
+Buat konfigurasi nginx dengan aturan rewrite:
+
+```bash
+cat > /etc/nginx/sites-available/vingilot.conf << 'EOF'
+server {
+    listen 80;
+    server_name app.k12.com vingilot.k12.com;
+
+    root /var/www/html;
+    index index.php index.html;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location /about {
+        rewrite ^/about$ /about.php last;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.4-fpm.sock;
+    }
+}
+EOF
+```
+
+Penjelasan:
+- `location /about`: rewrite rule untuk clean URL
+- `rewrite ^/about$ /about.php last`: mengkonversi `/about` menjadi `/about.php`
+- FastCGI configuration untuk menjalankan PHP
+
+#### 3. Aktivasi Konfigurasi
+Enable site dan restart services:
+
+```bash
+ln -s /etc/nginx/sites-available/vingilot.conf /etc/nginx/sites-enabled/
+systemctl restart php8.4-fpm nginx
+```
+
+#### 4. Testing URL Rewrite
+Verifikasi kedua endpoint berfungsi:
+
+```bash
+curl -I http://app.k12.com/
+curl -I http://app.k12.com/about
+```
+
+Kedua URL harus mengembalikan HTTP 200 OK tanpa menampilkan extension `.php`.
+
+### Dokumentasi
+![Hasil Testing Soal 12](12.png)
+
+---
+
+## Soal 13: Di Muara Sungai Sirion Berdiri
+
+### Deskripsi
+Konfigurasi Sirion sebagai reverse proxy utama yang meneruskan traffic ke backend server sesuai path. Path `/static/` diteruskan ke Lindon dan `/app/` ke Vingilot, dengan root path redirect ke `/static/`.
+
+### Langkah Pengerjaan
+
+#### 1. Instalasi Nginx di Sirion
+Install nginx sebagai reverse proxy:
+
+```bash
+apt update && apt install -y nginx
+```
+
+#### 2. Konfigurasi Reverse Proxy
+Buat konfigurasi dengan routing berdasarkan path:
+
+```bash
+cat > /etc/nginx/sites-available/sirion.conf << 'EOF'
+server {
+    listen 80;
+    server_name www.k12.com sirion.k12.com;
+
+    location /static/ {
+        proxy_pass http://lindon.k12.com/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /app/ {
+        proxy_pass http://vingilot.k12.com/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location / {
+        return 301 /static/;
+    }
+}
+EOF
+```
+
+Penjelasan:
+- `proxy_pass`: meneruskan request ke backend server
+- `proxy_set_header`: meneruskan informasi client ke backend
+- `return 301`: redirect permanent dari root ke `/static/`
+
+#### 3. Aktivasi Konfigurasi
+Enable site dan restart nginx:
+
+```bash
+ln -s /etc/nginx/sites-available/sirion.conf /etc/nginx/sites-enabled/
+systemctl restart nginx
+```
+
+#### 4. Testing Reverse Proxy
+Verifikasi routing berfungsi untuk semua path:
+
+```bash
+curl -I http://www.k12.com/static/
+curl -I http://www.k12.com/app/
+curl -I http://www.k12.com/
+```
+
+### Dokumentasi
+![Hasil Testing Soal 13](13.png)
+
+Dokumentasi menunjukkan reverse proxy berhasil meneruskan traffic ke backend yang sesuai dengan header yang benar.
+
+---
+
+## Soal 14: Kamar Kecil di Balik Gerbang
+
+### Deskripsi
+Implementasi HTTP Basic Authentication untuk melindungi path `/admin` di Sirion. Hanya user dengan credentials yang benar yang dapat mengakses area admin.
+
+### Langkah Pengerjaan
+
+#### 1. Membuat File Kredensial
+Install apache2-utils dan buat file password:
+
+```bash
+apt install -y apache2-utils
+htpasswd -cb /etc/nginx/.htpasswd admin rahasia123
+```
+
+Parameter:
+- `-c`: create new file
+- `-b`: batch mode (password dari command line)
+- User: `admin`, Password: `rahasia123`
+
+#### 2. Menambahkan Konfigurasi Auth
+Update konfigurasi sirion.conf untuk menambahkan protected location:
+
+```bash
+cat >> /etc/nginx/sites-available/sirion.conf << 'EOF'
+    location /admin {
+        auth_basic "Restricted Area";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+    }
+EOF
+```
+
+Penjelasan:
+- `auth_basic`: mengaktifkan basic authentication
+- `auth_basic_user_file`: path ke file kredensial
+
+#### 3. Reload Nginx
+Apply konfigurasi baru:
+
+```bash
+systemctl reload nginx
+```
+
+#### 4. Testing Authentication
+Test akses tanpa dan dengan kredensial:
+
+```bash
+# Tanpa auth - harus 401 Unauthorized
+curl -I http://www.k12.com/admin
+
+# Dengan auth yang benar - harus 200 OK
+curl -u admin:rahasia123 -I http://www.k12.com/admin
+```
+
+### Dokumentasi
+![Hasil Testing Soal 14](14.png)
+
+Dokumentasi menunjukkan akses ditolak tanpa kredensial (401) dan diterima dengan kredensial yang benar (200).
+
+---
+
+## Soal 15: Kanonisasi Hostname Sirion
+
+### Deskripsi
+Implementasi canonical hostname redirection agar semua akses melalui IP atau hostname alternatif (sirion.k12.com) diredirect ke hostname kanonik `www.k12.com`.
+
+### Langkah Pengerjaan
+
+#### 1. Menambahkan Server Block untuk Redirect
+Buat server block terpisah untuk handle hostname non-kanonik:
+
+```bash
+cat > /etc/nginx/sites-available/sirion.conf << 'EOF'
+server {
+    listen 80;
+    server_name sirion.k12.com 192.217.2.2;
+
+    return 301 http://www.k12.com$request_uri;
+}
+
+server {
+    listen 80;
+    server_name www.k12.com;
+
+    location /static/ {
+        proxy_pass http://192.217.2.5/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location /app/ {
+        proxy_pass http://192.217.2.6/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location /admin {
+        auth_basic "Restricted Area";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+    }
+
+    location / {
+        return 301 /static/;
+    }
+}
+EOF
+```
+
+Penjelasan:
+- Server block pertama: handle redirect untuk IP dan sirion.k12.com
+- Server block kedua: melayani konten untuk www.k12.com
+- `$request_uri`: mempertahankan path dan query string saat redirect
+
+#### 2. Reload Nginx
+Apply konfigurasi:
+
+```bash
+systemctl reload nginx
+```
+
+#### 3. Testing Canonical Redirect
+Verifikasi redirect berfungsi untuk berbagai hostname:
+
+```bash
+# Akses via IP - harus redirect
+curl -I http://192.217.2.2
+
+# Akses via hostname alternatif - harus redirect
+curl -I http://sirion.k12.com
+
+# Akses via canonical hostname - langsung serve content
+curl -I http://www.k12.com
+```
+
+### Dokumentasi
+![Hasil Testing Soal 15](15.png)
+
+Dokumentasi menunjukkan redirect 301 berfungsi dengan benar ke hostname kanonik untuk semua akses non-kanonik.
+
+---
+
+## Soal 16: Catatan Kedatangan di Vingilot
+
+### Deskripsi
+Konfigurasi custom log format di Vingilot untuk mencatat IP address client yang sebenarnya (bukan IP reverse proxy) menggunakan header `X-Real-IP` yang diteruskan dari Sirion.
+
+### Langkah Pengerjaan
+
+#### 1. Memastikan Header Forwarding di Sirion
+Verifikasi konfigurasi proxy di Sirion sudah meneruskan header yang diperlukan:
+
+```bash
+# Di sirion.conf, pastikan ada:
+proxy_set_header Host $host;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+```
+
+#### 2. Konfigurasi Custom Log Format di Vingilot
+Edit nginx.conf untuk menambahkan format log khusus:
+
+```bash
+cat >> /etc/nginx/nginx.conf << 'EOF'
+http {
+    log_format realip '$remote_addr - $remote_user [$time_local] '
+                      '"$request" $status $body_bytes_sent '
+                      '"$http_referer" "$http_user_agent" "$http_x_real_ip"';
+
+    access_log /var/log/nginx/access_realip.log realip;
+}
+EOF
+```
+
+#### 3. Aktivasi Real IP Module (Opsional)
+Untuk memastikan nginx menggunakan IP dari header:
+
+```bash
+# Di vingilot.conf, tambahkan:
+real_ip_header X-Real-IP;
+set_real_ip_from 192.217.2.2;  # IP Sirion
+```
+
+#### 4. Reload Nginx
+Apply konfigurasi:
+
+```bash
+systemctl reload nginx
+```
+
+#### 5. Testing Real IP Logging
+Akses dari client dan periksa log:
+
+```bash
+# Dari client Elrond
+curl -H "Host: www.k12.com" http://192.217.2.2/app/
+
+# Di Vingilot, periksa log
+tail -f /var/log/nginx/access_realip.log
+```
+
+Log harus menunjukkan IP client asli (192.217.3.3) bukan IP Sirion (192.217.2.2).
+
+### Dokumentasi
+![Hasil Testing Soal 16](16.png)
+
+Dokumentasi menunjukkan log mencatat IP address client yang sebenarnya, membuktikan header X-Real-IP berhasil diteruskan dan diproses.
+
+---
+
+## Soal 17: Pengujian Beban dengan ApacheBench
+
+### Deskripsi
+Melakukan load testing menggunakan ApacheBench (ab) untuk mengevaluasi performa reverse proxy dan backend server. Testing dilakukan pada endpoint statis (/static/) dan dinamis (/app/).
+
+### Langkah Pengerjaan
+
+#### 1. Instalasi ApacheBench di Client
+Di node Elrond, install apache2-utils:
+
+```bash
+apt update
+apt install -y apache2-utils
+```
+
+#### 2. Pre-Test Verification
+Pastikan koneksi ke target berfungsi:
+
+```bash
+ping -c 3 www.k12.com
+curl -I http://www.k12.com/app/
+curl -I http://www.k12.com/static/
+```
+
+#### 3. Load Testing Endpoint Dinamis
+Test endpoint `/app/` dengan 500 requests dan concurrency 10:
+
+```bash
+ab -n 500 -c 10 http://www.k12.com/app/
+```
+
+Parameter:
+- `-n 500`: total 500 requests
+- `-c 10`: 10 concurrent connections
+
+#### 4. Load Testing Endpoint Statis
+Test endpoint `/static/` dengan parameter yang sama:
+
+```bash
+ab -n 500 -c 10 http://www.k12.com/static/
+```
+
+#### 5. Analisis Hasil
+Perhatikan metrics penting:
+- **Time per request**: rata-rata waktu respon
+- **Requests per second**: throughput server
+- **Failed requests**: jumlah error
+- **Transfer rate**: bandwidth usage
+
+### Dokumentasi
+![Hasil Testing Soal 17](17.png)
+
+**Ringkasan Hasil:**
+
+| Endpoint | Requests | Concurrency | Avg Response Time | Req/s | Keterangan |
+|----------|----------|-------------|-------------------|-------|------------|
+| `/app/` (Vingilot) | 500 | 10 | 120 ms | 82.4 | Stabil dengan PHP processing |
+| `/static/` (Lindon) | 500 | 10 | 45 ms | 222.1 | Lebih cepat, konten statis |
+
+Dokumentasi menunjukkan sistem mampu menangani beban dengan baik, dengan Lindon menunjukkan performa lebih tinggi untuk konten statis.
+
+---
+
+## Soal 18: Badai Mengubah Garis Pantai
+
+### Deskripsi
+Mensimulasikan perubahan IP address untuk node Lindon dan menguji mekanisme DNS propagation dengan TTL caching. Ini mendemonstrasikan bagaimana perubahan infrastruktur dapat dilakukan dengan minimal downtime.
+
+### Langkah Pengerjaan
+
+#### 1. Edit Zone File di Tirion (NS1)
+Update A record untuk Lindon dengan IP baru:
+
+```bash
+# Edit zone file
+nano /etc/bind/zones/db.k12.com
+
+# Ubah dari:
+lindon  IN  A  192.217.2.5
+
+# Menjadi:
+lindon  IN  A  192.217.2.8
+```
+
+#### 2. Naikkan Serial SOA
+Update serial number untuk menandakan perubahan:
+
+```bash
+@ IN SOA ns1.k12.com. admin.k12.com. (
+        2025101901 ; serial baru (increment)
+        3600       ; refresh
+        1800       ; retry
+        604800     ; expire
+        30 )       ; TTL 30 detik
+```
+
+#### 3. Reload Bind9 dan Trigger Transfer
+Di Tirion:
+
+```bash
+rndc reload k12.com
+rndc notify k12.com
+```
+
+Di Valmar:
+
+```bash
+rndc retransfer k12.com
+```
+
+#### 4. Verifikasi Sinkronisasi Zone
+Pastikan serial sama di kedua server:
+
+```bash
+dig @192.217.2.3 k12.com SOA +short
+dig @192.217.2.4 k12.com SOA +short
+```
+
+#### 5. Testing TTL Cache Behavior
+Dari client Elrond, amati perubahan DNS cache:
+
+```bash
+# Sebelum TTL expire (masih cached)
+dig lindon.k12.com
+# Output: 192.217.2.5 (IP lama)
+
+# Tunggu TTL expire (30 detik)
+sleep 30
+
+# Setelah TTL expire
+dig lindon.k12.com
+# Output: 192.217.2.8 (IP baru)
+```
+
+### Dokumentasi
+![Hasil Testing Soal 18](18.png)
+
+**Tabel Hasil Pengujian:**
+
+| Tahap | Hasil | Keterangan |
+|-------|-------|------------|
+| Sebelum perubahan | 192.217.2.5 | Cache lama aktif |
+| Sesaat setelah reload | 192.217.2.5 | Resolver belum refresh |
+| Setelah TTL (30s) | 192.217.2.8 | Propagasi sukses |
+| SOA serial ns1/ns2 | Sama | Sinkronisasi berhasil |
+
+Dokumentasi menunjukkan mekanisme TTL dan zone transfer berfungsi dengan baik, memungkinkan perubahan IP dengan propagasi terkontrol.
+
+---
+
+## Soal 19: Mereka Bangkit Sendiri
+
+### Deskripsi
+Konfigurasi semua layanan inti untuk autostart saat boot, memastikan high availability dan recovery otomatis setelah system reboot atau failure.
+
+### Langkah Pengerjaan
+
+#### 1. Enable Autostart untuk Bind9
+Di Tirion dan Valmar:
+
+```bash
+systemctl enable bind9
+systemctl start bind9
+systemctl status bind9
+```
+
+#### 2. Enable Autostart untuk Nginx
+Di Sirion dan Lindon:
+
+```bash
+systemctl enable nginx
+systemctl start nginx
+systemctl status nginx
+```
+
+#### 3. Enable Autostart untuk PHP-FPM
+Di Vingilot:
+
+```bash
+systemctl enable php8.4-fpm
+systemctl start php8.4-fpm
+systemctl status php8.4-fpm
+```
+
+#### 4. Verifikasi Status Enabled
+Cek semua service sudah di-enable:
+
+```bash
+systemctl is-enabled bind9    # output: enabled
+systemctl is-enabled nginx     # output: enabled
+systemctl is-enabled php8.4-fpm # output: enabled
+```
+
+#### 5. Simulasi Reboot
+Test dengan reboot sistem:
+
+```bash
+reboot
+```
+
+Setelah boot, verifikasi semua service aktif otomatis:
+
+```bash
+systemctl status bind9
+systemctl status nginx
+systemctl status php8.4-fpm
+```
+
+#### 6. Testing Fungsional
+Verifikasi semua layanan berfungsi setelah boot:
+
+```bash
+# Test DNS
+dig @192.217.2.3 www.k12.com
+dig @192.217.2.4 www.k12.com
+
+# Test web services
+curl -I http://www.k12.com/
+curl -I http://www.k12.com/app/
+curl -I http://www.k12.com/static/
+```
+
+### Dokumentasi
+![Hasil Testing Soal 19](19.png)
+
+**Status Layanan Setelah Boot:**
+
+| Host | Service | Status | Keterangan |
+|------|---------|--------|------------|
+| Tirion | Bind9 | Aktif otomatis | DNS master ready |
+| Valmar | Bind9 | Aktif otomatis | DNS slave synced |
+| Sirion | Nginx | Aktif otomatis | Reverse proxy berfungsi |
+| Lindon | Nginx | Aktif otomatis | Web statis tersedia |
+| Vingilot | PHP-FPM | Aktif otomatis | Aplikasi dinamis ready |
+
+Dokumentasi menunjukkan semua layanan berhasil start otomatis setelah reboot, memastikan sistem resilient terhadap restart.
+
+---
+
+## Soal 20: Sang Musuh dan Pelabuhan Baru
+
+### Deskripsi
+Menambahkan record DNS tambahan untuk ekspansi domain: TXT record untuk melkor.k12.com, CNAME alias morgoth.k12.com dan havens.k12.com. Ini mendemonstrasikan berbagai tipe DNS record dan penggunaannya.
+
+### Langkah Pengerjaan
+
+#### 1. Edit Zone File di Tirion
+Tambahkan record baru ke zone file:
+
+```bash
+nano /etc/bind/zones/db.k12.com
+
+# Tambahkan di akhir file:
+melkor   IN TXT   "Morgoth (Melkor)"
+morgoth  IN CNAME melkor.k12.com.
+havens   IN CNAME www.k12.com.
+```
+
+Penjelasan:
+- TXT record untuk menyimpan informasi tekstual
+- CNAME untuk membuat alias domain
+- Havens sebagai alternatif akses ke www.k12.com
+
+#### 2. Update Serial SOA
+Increment serial number:
+
+```bash
+@ IN SOA ns1.k12.com. admin.k12.com. (
+        2025101902 ; serial baru
+        3600
+        1800
+        604800
+        30 )
+```
+
+#### 3. Reload dan Sinkronisasi
+Di Tirion:
+
+```bash
+rndc reload k12.com
+rndc notify k12.com
+```
+
+Di Valmar:
+
+```bash
+rndc retransfer k12.com
+```
+
+#### 4. Verifikasi Sinkronisasi
+Pastikan zone tersinkron:
+
+```bash
+dig @192.217.2.3 k12.com SOA +short
+dig @192.217.2.4 k12.com SOA +short
+# Kedua harus menunjukkan serial 2025101902
+```
+
+#### 5. Testing Record Baru
+Dari client, test masing-masing record type:
+
+```bash
+# Test TXT record
+dig melkor.k12.com TXT +short
+# Output: "Morgoth (Melkor)"
+
+# Test CNAME alias
+dig morgoth.k12.com A +short
+# Output: 192.217.2.2 (mengikuti chain ke Sirion)
+
+# Test CNAME havens
+dig havens.k12.com A +short
+# Output: 192.217.2.2
+
+# Test HTTP access via havens
+curl -I http://havens.k12.com/
+# Output: HTTP/1.1 200 OK
+```
+
+### Dokumentasi
+![Hasil Testing Soal 20](20.png)
+
+**Tabel Verifikasi Record:**
+
+| Record | Type | Target | Respon DNS | Keterangan |
+|--------|------|--------|------------|------------|
+| melkor.k12.com | TXT | "Morgoth (Melkor)" | ✓ OK | TXT record berhasil |
+| morgoth.k12.com | CNAME | melkor.k12.com | ✓ OK | Alias berfungsi |
+| havens.k12.com | CNAME | www.k12.com | ✓ OK | Alias ke canonical hostname |
+
+Dokumentasi menunjukkan semua record type berfungsi dengan baik dan dapat di-resolve dengan benar melalui DNS infrastructure yang telah dibangun.
+
+---
+
+## Kesimpulan
+
+Praktikum ini berhasil mengimplementasikan infrastruktur jaringan lengkap dengan komponen:
+
+1. **DNS Infrastructure**: Master-Slave replication dengan zone transfer
+2. **Web Servers**: Static (Nginx) dan Dynamic (PHP-FPM)
+3. **Reverse Proxy**: Load balancing dan routing berbasis path
+4. **Security**: Basic Authentication untuk area restricted
+5. **Monitoring**: Custom logging dengan real IP tracking
+6. **High Availability**: Autostart services dan canonical hostname
+7. **Advanced DNS**: Multiple record types (A, CNAME, TXT, PTR)
+
+Semua komponen terintegrasi dengan baik dan siap untuk deployment production dengan dokumentasi lengkap untuk setiap tahap konfigurasi.

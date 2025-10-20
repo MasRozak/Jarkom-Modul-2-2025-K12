@@ -65,7 +65,7 @@ EOF
 service nginx restart
 
 #Di Client
-apt-get update
-apt-get install -y lynx
+apt update
+apt install -y lynx
 lynx app.k12.com/about
 lynx app.k12.com 

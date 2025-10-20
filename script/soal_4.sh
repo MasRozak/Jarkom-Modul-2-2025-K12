@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #Di Tirion (NS1)
-apt-get update
-apt-get install bind9 -y
+apt update
+apt install bind9 -y
 
 ln -s /etc/init.d/named /etc/init.d/bind9 
 
@@ -70,8 +70,8 @@ EOF
 service bind9 restart
 
 #Di Valmor (NS2)
-apt-get update
-apt-get install bind9 -y
+apt update
+apt install bind9 -y
 ln -s /etc/init.d/named /etc/init.d/bind9
 
     
